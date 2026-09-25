@@ -129,38 +129,30 @@ body {
   .grain { animation: none; }
 }
 
-/* ---------- loading screen ---------- */
+/* ---------- loading screen : dot + cycling greetings ---------- */
 #loader {
   position: fixed; inset: 0; z-index: 500;
-  background: #05070a; color: #ece9e2;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: clamp(1.5rem, 4vw, 3.5rem);
+  background: #05070a; color: #fff;
+  display: flex; align-items: center; justify-content: center;
 }
-.loader-brand {
-  position: absolute; top: clamp(1.5rem, 4vw, 3rem); left: clamp(1.5rem, 4vw, 3.5rem);
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
-  color: #ece9e2;
+.loader-center, .wipe-center {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex; align-items: center; gap: .35em;
+  white-space: nowrap;
 }
-.loader-brand span { color: #5b636d; }
-.loader-tag {
-  position: absolute; top: clamp(1.5rem, 4vw, 3rem); right: clamp(1.5rem, 4vw, 3.5rem);
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-  color: #5b636d;
+.l-dot {
+  width: .22em; height: .22em; border-radius: 50%;
+  background: #fff; flex: none;
 }
-.loader-count {
-  font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(5rem, 17vw, 13rem); line-height: .9; letter-spacing: -.02em;
-  font-variant-numeric: tabular-nums; color: #ece9e2;
+.l-word {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(2.2rem, 5vw, 3.75rem); line-height: 1;
+  letter-spacing: -0.01em; color: #fff;
+  display: inline-block; will-change: transform, opacity, filter;
 }
-.loader-pct { font-size: .22em; color: #ff5a1f; margin-left: .08em; }
-.loader-bar {
-  margin-top: 1.5rem; height: 2px; background: rgba(255,255,255,.08);
-  overflow: hidden; border-radius: 2px;
-}
-.loader-bar span {
-  display: block; height: 100%; width: 100%;
-  background: #ff5a1f; transform: scaleX(0); transform-origin: left;
-}
+.loader-center .l-dot, .loader-center .l-word { font-size: clamp(2.2rem, 5vw, 3.75rem); }
+.wipe-center .l-dot, .wipe-center .l-word { font-size: clamp(2.6rem, 6vw, 4.5rem); }
 
 /* ---------- page transition wipe ---------- */
 #wipe {
@@ -170,7 +162,3 @@ body {
   pointer-events: none;
 }
 .js.returning #wipe { transform: translateY(0); }
-.wipe-edge {
-  position: absolute; top: -2px; left: 0; right: 0; height: 2px;
-  background: #ff5a1f;
-}
