@@ -1,0 +1,120 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.jsx";
+import SectionHead from "../components/SectionHead.jsx";
+import CtaBand from "../components/CtaBand.jsx";
+import { FadeUp } from "../components/Reveal.jsx";
+
+const CERTS = [
+  {
+    code: "ISO 9001", name: "Quality management",
+    covers: ["Documented, repeatable service processes", "Corrective action & continual improvement", "Customer requirement traceability"],
+    note: "The system that makes every calibration follow the same controlled path — from intake to certificate.",
+  },
+  {
+    code: "ISO 14001", name: "Environmental management",
+    covers: ["Environmental aspects of lab & field work", "Waste & resource controls", "Compliance obligations tracked"],
+    note: "How we keep the footprint of precision work as small as the tolerances we measure.",
+  },
+  {
+    code: "ISO 45001", name: "Occupational health & safety",
+    covers: ["Risk assessment for lab and on-site work", "Engineer competence & training records", "Incident reporting & prevention"],
+    note: "The same discipline we apply to instruments, applied to the people doing the measuring.",
+  },
+];
+
+const CHAIN = [
+  { t: "SI units", d: "The international system — the definition of true." },
+  { t: "National metrology institute", d: "Primary standards, internationally compared." },
+  { t: "CALTEC reference standards", d: "Our working standards, calibrated & controlled." },
+  { t: "Your instrument", d: "Calibrated, documented, audit-ready." },
+];
+---
+
+<Layout
+  title="Certificates — CALTEC Calibration Technology Services"
+  description="ISO 9001, ISO 14001 and ISO 45001 certified management systems, with an unbroken traceability chain to SI units."
+>
+  <PageHero
+    client:load
+    eyebrow="CALTEC / Certificates"
+    title="Assurance, made visible."
+    lede="Integrated management certifications behind every service — and a traceability chain you can follow from your instrument all the way to the SI."
+  />
+
+  <section class="relative pb-28 md:pb-40">
+    <div class="mx-auto max-w-[1600px] px-6 md:px-12">
+      <div class="grid gap-5 lg:grid-cols-3">
+        {
+          CERTS.map((c, i) => (
+            <FadeUp client:visible delay={i * 0.1}>
+              <article class="group relative flex h-full flex-col overflow-hidden rounded-2xl border hairline bg-[#0b0e13] p-8 transition-colors duration-500 hover:border-[#ff5a1f]/30 md:p-10" data-hover>
+                <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#ff5a1f]/[0.08] blur-[60px] opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden="true" />
+                <div class="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[#37e08b]">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M5 8.2L7.2 10.4L11 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  Certified
+                </div>
+                <p class="mt-6 font-display text-5xl font-bold tracking-tight md:text-6xl">
+                  {c.code.split(" ")[0]}<span class="text-[#ff5a1f]"> {c.code.split(" ")[1]}</span>
+                </p>
+                <p class="mt-2 font-mono text-[12px] uppercase tracking-[0.18em] text-[#9aa3ad]">{c.name}</p>
+                <ul class="mt-8 space-y-3 border-t hairline pt-8">
+                  {c.covers.map((x) => (
+                    <li class="flex items-start gap-3 text-[15px] text-[#9aa3ad]">
+                      <span class="mt-1 text-[#ff5a1f]">▸</span> {x}
+                    </li>
+                  ))}
+                </ul>
+                <p class="mt-8 border-t hairline pt-6 text-[15px] leading-relaxed text-[#9aa3ad]">{c.note}</p>
+              </article>
+            </FadeUp>
+          ))
+        }
+      </div>
+
+      <div class="mt-28 md:mt-40">
+        <SectionHead
+          client:visible
+          kicker="Traceability"
+          title="An unbroken chain to the SI."
+          copy="A measurement is only as good as its reference. Ours links back to the International System of Units through documented, calibrated steps — and every certificate shows the chain."
+        />
+        <div class="mt-12">
+          <div class="grid gap-0 md:grid-cols-4">
+            {
+              CHAIN.map((c, i) => (
+                <FadeUp client:visible delay={i * 0.12}>
+                  <div class="relative border-t-2 border-[#ff5a1f]/60 pt-8 pr-6 pb-4">
+                    <span class="absolute -top-[9px] left-0 h-4 w-4 rounded-full border-2 border-[#ff5a1f] bg-[#05070a]" aria-hidden="true" />
+                    <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#5b636d]">Link {String(i + 1).padStart(2, "0")}</p>
+                    <h3 class="mt-3 font-display text-xl font-bold tracking-tight">{c.t}</h3>
+                    <p class="mt-2 text-[14px] leading-relaxed text-[#9aa3ad]">{c.d}</p>
+                  </div>
+                </FadeUp>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <FadeUp client:visible>
+        <div class="mt-20 rounded-2xl border hairline bg-[#070a0e] p-8 md:p-12">
+          <SectionHead
+            client:visible
+            kicker="For your audit file"
+            title="Need the current certificates?"
+            copy="We keep the current certificate documents ready for customer and regulator audits. Ask and we'll send the set for your vendor file."
+          />
+          <a href="/contact" class="btn-outline mt-8" data-hover>
+            Request certificate copies
+          </a>
+        </div>
+      </FadeUp>
+    </div>
+  </section>
+
+  <CtaBand client:visible />
+</Layout>

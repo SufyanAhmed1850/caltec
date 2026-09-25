@@ -1,0 +1,77 @@
+---
+// Footer — live Karachi clock, big wordmark, sitemap
+const year = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden border-t hairline bg-[#05070a]">
+  <div class="mx-auto max-w-[1600px] px-6 pt-16 md:px-12 md:pt-24">
+    <div class="grid gap-12 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <p class="label-mono mb-6"><span class="tick">■</span>&nbsp;&nbsp;Calibration Technology Services</p>
+        <p class="font-display text-3xl font-bold leading-tight tracking-tight md:text-4xl">
+          Keep uncertainty<br />out of the process.
+        </p>
+        <a href="/contact" class="btn-signal mt-8">
+          Start a service request
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="md:col-span-3">
+        <p class="label-mono mb-6"><span class="tick">■</span>&nbsp;&nbsp;Index</p>
+        <ul class="space-y-3 font-mono text-[13px] uppercase tracking-[0.14em] text-[#9aa3ad]">
+          <li><a href="/" class="transition-colors hover:text-[#ff5a1f]">Home</a></li>
+          <li><a href="/services" class="transition-colors hover:text-[#ff5a1f]">Services</a></li>
+          <li><a href="/about" class="transition-colors hover:text-[#ff5a1f]">About</a></li>
+          <li><a href="/process" class="transition-colors hover:text-[#ff5a1f]">Process</a></li>
+          <li><a href="/certificates" class="transition-colors hover:text-[#ff5a1f]">Certificates</a></li>
+          <li><a href="/contact" class="transition-colors hover:text-[#ff5a1f]">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-4">
+        <p class="label-mono mb-6"><span class="tick">■</span>&nbsp;&nbsp;Reach us</p>
+        <ul class="space-y-4 text-[15px] text-[#9aa3ad]">
+          <li>
+            <a href="tel:+923332283557" class="font-display text-2xl font-bold text-[#ece9e2] transition-colors hover:text-[#ff5a1f]">
+              +92 333 22 83557
+            </a>
+          </li>
+          <li class="font-mono text-[12px] uppercase tracking-[0.16em]">
+            Karachi, Pakistan<br />Nationwide on-site support
+          </li>
+          <li class="font-mono text-[12px] uppercase tracking-[0.16em] text-[#5b636d]">
+            Local time — <span id="khi-clock" class="tnum text-[#9aa3ad]">--:--:--</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-16 select-none overflow-hidden" aria-hidden="true">
+      <p class="font-display text-[18.5vw] font-bold leading-[0.8] tracking-tighter text-white/[0.045] md:text-[16vw]">
+        CALTEC
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-3 border-t hairline py-6 font-mono text-[11px] uppercase tracking-[0.18em] text-[#5b636d] md:flex-row md:items-center md:justify-between">
+      <span>© {year} Calibration Technology Services</span>
+      <span>ISO 9001 · ISO 14001 · ISO 45001</span>
+      <span>Traceable · Auditable · Field-ready</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const el = document.getElementById("khi-clock");
+  function tick() {
+    if (!el) return;
+    el.textContent = new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+      hour12: false, timeZone: "Asia/Karachi",
+    }).format(new Date());
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>

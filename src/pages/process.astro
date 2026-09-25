@@ -1,0 +1,118 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.jsx";
+import SectionHead from "../components/SectionHead.jsx";
+import CtaBand from "../components/CtaBand.jsx";
+import { FadeUp } from "../components/Reveal.jsx";
+import { STEPS } from "../data/disciplines.js";
+
+const DETAIL = [
+  {
+    n: "01", title: "Define",
+    body: "Every engagement starts with the facts: instrument make and model, measurement range, accuracy required, location, and the turnaround your schedule demands. We ask the awkward questions now — access constraints, shutdown windows, quality-system formats — so nothing surfaces mid-job.",
+    out: ["Confirmed instrument list", "Required ranges & tolerances", "Site & access requirements", "Target turnaround"],
+  },
+  {
+    n: "02", title: "Plan",
+    body: "We translate the requirement into a scope: which discipline, which reference standard, laboratory or on-site, and how the results will be documented. You approve the plan — including the standards cited — before a single test point is applied.",
+    out: ["Agreed calibration scope", "Reference standards cited", "Delivery route: lab / on-site", "Fixed schedule"],
+  },
+  {
+    n: "03", title: "Calibrate",
+    body: "The work itself, executed against traceable references with documented quality controls: as-found / as-left data, environmental conditions logged, uncertainties recorded. If an instrument is out of tolerance, you hear it from us first — with options, not surprises.",
+    out: ["As-found / as-left data", "Uncertainty budgets", "Out-of-tolerance alerts", "Adjustment where agreed"],
+  },
+  {
+    n: "04", title: "Close the loop",
+    body: "Certificates and records arrive organised around your quality workflow — ready for internal QA, customer audits and regulators. Questions after delivery go to the same team that did the work.",
+    out: ["Calibration certificates", "Audit-ready records", "Recall scheduling", "Direct engineer contact"],
+  },
+];
+---
+
+<Layout
+  title="Process — How CALTEC works"
+  description="A visible four-stage workflow: Define, Plan, Calibrate, Close the loop. Scope, timing and documentation kept easy to follow."
+>
+  <PageHero
+    client:load
+    eyebrow="CALTEC / Process"
+    title="From requirement to usable record."
+    lede="A visible, four-stage workflow keeps scope, timing and documentation easy to follow — no black boxes, no chasing paperwork."
+  />
+
+  <section class="relative pb-28 md:pb-40">
+    <div class="mx-auto max-w-[1600px] px-6 md:px-12">
+      <div class="space-y-6">
+        {
+          DETAIL.map((s, i) => (
+            <FadeUp client:visible>
+              <article class="group grid gap-8 overflow-hidden rounded-2xl border hairline bg-[#0b0e13] p-8 transition-colors duration-500 hover:border-[#ff5a1f]/30 md:grid-cols-12 md:p-12">
+                <div class="md:col-span-5">
+                  <p class="font-display text-7xl font-bold tracking-tighter text-white/[0.07] transition-colors duration-500 group-hover:text-[#ff5a1f]/25 md:text-8xl">
+                    {s.n}
+                  </p>
+                  <h2 class="mt-4 font-display text-4xl font-bold tracking-tight md:text-5xl">{s.title}</h2>
+                  <p class="mt-6 leading-relaxed text-[#9aa3ad]">{s.body}</p>
+                  {i === 0 && (
+                    <a href="/contact" class="btn-signal mt-8" data-hover>
+                      Start a service request
+                    </a>
+                  )}
+                </div>
+                <div class="md:col-span-7 md:pl-8">
+                  <p class="label-mono mb-6"><span class="tick">■</span>&nbsp;&nbsp;What you receive</p>
+                  <ul class="grid gap-4 sm:grid-cols-2">
+                    {s.out.map((o) => (
+                      <li class="flex items-start gap-3 rounded-xl border hairline bg-[#05070a]/60 p-5">
+                        <span class="mt-0.5 text-[#37e08b]">
+                          <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+                            <path d="M2.5 7.5L5.8 10.8L11.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </span>
+                        <span class="text-[15px] leading-snug text-[#ece9e2]">{o}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            </FadeUp>
+          ))
+        }
+      </div>
+
+      <div class="mt-20">
+        <SectionHead
+          client:visible
+          kicker="Laboratory + field"
+          title="Two delivery routes, one standard."
+          copy="Bench work in our Karachi laboratory for the tightest uncertainties — or calibrated on your line, during your shutdown window, by the same engineers."
+        />
+        <div class="mt-10 grid gap-5 md:grid-cols-2">
+          <FadeUp client:visible>
+            <div class="rounded-2xl border hairline bg-[#0b0e13] p-8 md:p-10">
+              <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[#ff5a1f]">Route A</p>
+              <h3 class="mt-3 font-display text-3xl font-bold tracking-tight">Laboratory calibration</h3>
+              <p class="mt-4 leading-relaxed text-[#9aa3ad]">
+                Instruments received, calibrated under controlled conditions against our reference standards,
+                and returned with full certificates. Best for the tightest tolerances and complex instruments.
+              </p>
+            </div>
+          </FadeUp>
+          <FadeUp client:visible delay={0.1}>
+            <div class="rounded-2xl border hairline bg-[#0b0e13] p-8 md:p-10">
+              <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-[#ff5a1f]">Route B</p>
+              <h3 class="mt-3 font-display text-3xl font-bold tracking-tight">On-site calibration</h3>
+              <p class="mt-4 leading-relaxed text-[#9aa3ad]">
+                Our engineers come to you — nationwide — with portable standards. Loops stay wired, lines keep
+                running, and your team watches the work happen.
+              </p>
+            </div>
+          </FadeUp>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand client:visible />
+</Layout>

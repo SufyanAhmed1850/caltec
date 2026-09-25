@@ -1,0 +1,125 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.jsx";
+import SectionHead from "../components/SectionHead.jsx";
+import CtaBand from "../components/CtaBand.jsx";
+import LogoMarquee from "../components/LogoMarquee.jsx";
+import { FadeUp, Counter } from "../components/Reveal.jsx";
+
+const TIMELINE = [
+  { year: "2014", title: "Founded in Karachi", text: "CALTEC opens its doors with a single conviction: measurement you can prove." },
+  { year: "2016", title: "Field service launches", text: "On-site calibration teams start supporting plants across Pakistan." },
+  { year: "2019", title: "Integrated management systems", text: "ISO 9001, 14001 and 45001 certifications formalise how we work." },
+  { year: "2022", title: "Seven disciplines", text: "The scope grows into seven focused calibration disciplines under one roof." },
+  { year: "Today", title: "55+ organisations", text: "Pharma, food, energy, textiles and healthcare teams rely on CALTEC records." },
+];
+
+const VALUES = [
+  { t: "Traceability first", d: "Every result links back to SI through documented, unbroken chains." },
+  { t: "Audit-aware by default", d: "Certificates and records organised around your quality workflow — not ours." },
+  { t: "Scope before promises", d: "Requirements clarified up front, so delivery dates mean something." },
+  { t: "One accountable team", d: "The same people across laboratory bench and field visit." },
+];
+---
+
+<Layout
+  title="About — CALTEC Calibration Technology Services"
+  description="Since 2014, CALTEC has provided traceable calibration, instrumentation support and validation to essential industries across Pakistan."
+>
+  <PageHero
+    client:load
+    eyebrow="CALTEC / About"
+    title="The team behind the measurement."
+    lede="Since 2014, we've helped pharmaceutical, manufacturing, food, energy and healthcare organisations prove what their instruments say — in the laboratory and on site."
+  />
+
+  <section class="relative pb-28 md:pb-40">
+    <div class="mx-auto max-w-[1600px] px-6 md:px-12">
+      <div class="grid gap-16 lg:grid-cols-2">
+        <div>
+          <SectionHead
+            client:visible
+            kicker="Why we exist"
+            title="Uncertainty is expensive. We remove it."
+            copy="A wrong reading can scrap a batch, fail an audit or stop a line. CALTEC exists so the teams running essential industry never have to guess whether their instruments are telling the truth."
+          />
+          <div class="mt-12 grid grid-cols-3 gap-6 border-t hairline pt-10">
+            <div>
+              <p class="font-display text-4xl font-bold md:text-5xl"><Counter client:visible to={12} suffix="+" /></p>
+              <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#5b636d]">Years in service</p>
+            </div>
+            <div>
+              <p class="font-display text-4xl font-bold md:text-5xl"><Counter client:visible to={55} suffix="+" /></p>
+              <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#5b636d]">Organisations served</p>
+            </div>
+            <div>
+              <p class="font-display text-4xl font-bold md:text-5xl"><Counter client:visible to={7} /></p>
+              <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#5b636d]">Disciplines</p>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <FadeUp client:visible>
+            <div class="overflow-hidden rounded-2xl border hairline">
+              <img
+                src="https://caltec.com.pk/wp-content/plugins/caltec-experience/assets/caltec-hero.jpg"
+                alt="CALTEC calibration work in an industrial facility"
+                class="h-[420px] w-full object-cover md:h-[540px]"
+                loading="lazy"
+              />
+            </div>
+          </FadeUp>
+        </div>
+      </div>
+
+      <div class="mt-28 md:mt-40">
+        <SectionHead client:visible kicker="How we got here" title="A short history of getting it right." />
+        <div class="mt-12 border-t hairline">
+          {
+            TIMELINE.map((t, i) => (
+              <FadeUp client:visible delay={i * 0.06}>
+                <div class="group grid gap-4 border-b hairline py-8 transition-colors md:grid-cols-12 md:items-baseline">
+                  <p class="font-mono text-[13px] tracking-[0.18em] text-[#ff5a1f] md:col-span-2">{t.year}</p>
+                  <h3 class="font-display text-2xl font-bold tracking-tight transition-transform duration-300 group-hover:translate-x-2 md:col-span-4 md:text-3xl">
+                    {t.title}
+                  </h3>
+                  <p class="leading-relaxed text-[#9aa3ad] md:col-span-6">{t.text}</p>
+                </div>
+              </FadeUp>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="mt-28 md:mt-40">
+        <SectionHead client:visible kicker="What we hold to" title="Four things that don't change." />
+        <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {
+            VALUES.map((v, i) => (
+              <FadeUp client:visible delay={i * 0.08}>
+                <div class="h-full rounded-2xl border hairline bg-[#0b0e13] p-8">
+                  <p class="font-mono text-[12px] tnum text-[#ff5a1f]">{String(i + 1).padStart(2, "0")}</p>
+                  <h3 class="mt-4 font-display text-xl font-bold tracking-tight">{v.t}</h3>
+                  <p class="mt-3 leading-relaxed text-[#9aa3ad]">{v.d}</p>
+                </div>
+              </FadeUp>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-28 md:pb-40">
+    <div class="mx-auto max-w-[1600px] px-6 md:px-12">
+      <SectionHead
+        client:visible
+        kicker="In good company"
+        title="Trusted across essential industries."
+      />
+    </div>
+    <div class="mt-12"><LogoMarquee client:visible /></div>
+  </section>
+
+  <CtaBand client:visible />
+</Layout>
