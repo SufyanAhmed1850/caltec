@@ -7,11 +7,9 @@ import LogoMarquee from "../components/LogoMarquee.jsx";
 import { FadeUp, Counter } from "../components/Reveal.jsx";
 
 const TIMELINE = [
-  { year: "2014", title: "Founded in Karachi", text: "CALTEC opens its doors with a single conviction: measurement you can prove." },
-  { year: "2016", title: "Field service launches", text: "On-site calibration teams start supporting plants across Pakistan." },
-  { year: "2019", title: "Integrated management systems", text: "ISO 9001, 14001 and 45001 certifications formalise how we work." },
-  { year: "2022", title: "Seven disciplines", text: "The scope grows into seven focused calibration disciplines under one roof." },
-  { year: "Today", title: "55+ organisations", text: "Pharma, food, energy, textiles and healthcare teams rely on CALTEC records." },
+  { year: "2014", title: "Founded in Karachi", text: "CALTEC (Calibration Technology Services) opens its doors with calibration, instrumentation and validation services." },
+  { year: "Growth", title: "Laboratory + on-site", text: "Field calibration teams begin supporting plants across Pakistan alongside the Karachi laboratory." },
+  { year: "Today", title: "Seven disciplines", text: "Pressure, temperature, flow, mechanical, electrical, precision and thermal mapping & validation under one roof." },
 ];
 
 const VALUES = [
@@ -49,8 +47,8 @@ const VALUES = [
               <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#5b636d]">Years in service</p>
             </div>
             <div>
-              <p class="font-display text-4xl font-bold md:text-5xl"><Counter client:visible to={55} suffix="+" /></p>
-              <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#5b636d]">Organisations served</p>
+              <p class="font-display text-4xl font-bold md:text-5xl"><Counter client:visible to={100} suffix="+" /></p>
+              <p class="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#5b636d]">Customer logos displayed</p>
             </div>
             <div>
               <p class="font-display text-4xl font-bold md:text-5xl"><Counter client:visible to={7} /></p>

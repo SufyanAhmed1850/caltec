@@ -1,0 +1,52 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.jsx";
+import EnquiryForm from "../components/EnquiryForm.jsx";
+import { FadeUp } from "../components/Reveal.jsx";
+import { CONTACT } from "../data/disciplines.js";
+---
+
+<Layout
+  title="Enquiry — CALTEC Calibration Technology Services"
+  description="Send CALTEC your calibration requirement — instrument list, location, turnaround and criteria."
+>
+  <PageHero
+    client:load
+    eyebrow="CALTEC / Enquiry"
+    title="Request a quote."
+    lede="Send the instrument list, location and turnaround requirement. Our team will confirm the appropriate capability and scope."
+  />
+
+  <section class="relative pb-28 md:pb-40">
+    <div class="mx-auto grid max-w-[1600px] gap-12 px-6 md:px-12 lg:grid-cols-12">
+      <div class="lg:col-span-7">
+        <EnquiryForm client:visible />
+      </div>
+      <div class="lg:col-span-5">
+        <FadeUp client:visible delay={0.1}>
+          <div class="lg:sticky lg:top-28 space-y-6">
+            <div class="rounded-2xl border hairline bg-[#070a0e] p-8">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#5b636d]">Prefer to reach out directly</p>
+              <p class="mt-5 text-[15px] leading-relaxed text-[#9aa3ad]">
+                Share manufacturer, model, working range and required calibration points so the right capability can be confirmed.
+              </p>
+              <ul class="mt-6 space-y-3 font-mono text-[13px] tracking-[0.08em]">
+                <li><a href={`mailto:${CONTACT.calibration}`} class="text-[#ff5a1f] transition-colors hover:text-[#ece9e2]">{CONTACT.calibration}</a></li>
+                <li><a href={CONTACT.mobileHref} class="text-[#ece9e2] transition-colors hover:text-[#ff5a1f]">{CONTACT.mobile}</a></li>
+                <li><a href={CONTACT.landlineHref} class="text-[#9aa3ad] transition-colors hover:text-[#ff5a1f]">{CONTACT.landline}</a></li>
+              </ul>
+            </div>
+            <div class="rounded-2xl border hairline bg-[#0b0e13] p-8">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#5b636d]">A complete enquiry includes</p>
+              <ul class="mt-5 space-y-4 text-[15px] text-[#9aa3ad]">
+                {["Instrument type, manufacturer, model and ID", "Range and required calibration points", "Place of calibration: site, laboratory or both", "Turnaround, acceptance criteria and audit deadline"].map((s) => (
+                  <li class="flex gap-4"><span class="mt-1 shrink-0 text-[#ff5a1f]">▸</span>{s}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </FadeUp>
+      </div>
+    </div>
+  </section>
+</Layout>

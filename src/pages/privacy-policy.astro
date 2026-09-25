@@ -1,0 +1,59 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.jsx";
+import { FadeUp } from "../components/Reveal.jsx";
+
+const SECTIONS = [
+  {
+    t: "Information we collect",
+    d: "When you submit an enquiry or contact CALTEC, we receive the details you provide — such as company name, address, contact person, designation, phone, fax, email address and your list of instruments. No account is required to browse this website.",
+  },
+  {
+    t: "How we use it",
+    d: "We use your enquiry details to prepare a scope and quotation for calibration, instrumentation or validation work, and to communicate with you about the engagement. We do not sell your information.",
+  },
+  {
+    t: "Data sharing",
+    d: "Your details are shared only within CALTEC and, where required to deliver a service, with the certification or accreditation bodies involved in that service. No marketing lists are maintained.",
+  },
+  {
+    t: "Retention",
+    d: "Enquiry and service records are retained for as long as needed to support quality records, calibration traceability and audit readiness, then handled according to our internal document-retention practice.",
+  },
+  {
+    t: "Your choices",
+    d: "You may ask us to correct or remove your contact details from our records at any time by writing to info@caltec.com.pk.",
+  },
+  {
+    t: "Contact",
+    d: "For questions about this policy, contact: Calibration Technology Services, Office 203, 2nd Floor, Building LS-1, Plot S/T-3/1, Sector 15, Korangi Industrial Area, Karachi, Pakistan — info@caltec.com.pk — +92 333 22 83557.",
+  },
+];
+---
+
+<Layout
+  title="Privacy Policy — CALTEC Calibration Technology Services"
+  description="How CALTEC handles enquiry and contact information."
+>
+  <PageHero
+    client:load
+    eyebrow="CALTEC / Privacy policy"
+    title="Plain and simple."
+    lede="What we collect when you enquire, why we keep it, and how to reach us about it."
+  />
+
+  <section class="relative pb-28 md:pb-40">
+    <div class="mx-auto max-w-[960px] px-6 md:px-12">
+      <div class="space-y-6">
+        {SECTIONS.map((s, i) => (
+          <FadeUp client:visible delay={i * 0.06}>
+            <div class="rounded-2xl border hairline bg-[#0b0e13] p-8 md:p-10">
+              <h2 class="font-display text-2xl font-bold tracking-tight">{s.t}</h2>
+              <p class="mt-4 leading-[1.85] text-[#9aa3ad]">{s.d}</p>
+            </div>
+          </FadeUp>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

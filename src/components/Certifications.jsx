@@ -48,7 +48,7 @@ export default function Certifications() {
 
         <FadeUp delay={0.2}>
           <div className="mt-10 flex justify-center">
-            <a href="/certificates" className="btn-outline" data-hover>
+            <a href="/certification/" className="btn-outline" data-hover>
               View current certificates
             </a>
           </div>

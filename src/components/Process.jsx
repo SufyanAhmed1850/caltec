@@ -74,7 +74,7 @@ export default function Process({ steps }) {
                 <h3 className="font-display text-3xl font-bold tracking-tight md:text-4xl">{s.title}</h3>
                 <p className="mt-4 max-w-md leading-relaxed text-[#9aa3ad]">{s.description}</p>
                 {i === 0 && (
-                  <a href="/contact" className="btn-signal mt-6 !py-3 !px-6" data-hover>
+                  <a href="/enquiry/" className="btn-signal mt-6 !py-3 !px-6" data-hover>
                     Start a service request
                   </a>
                 )}

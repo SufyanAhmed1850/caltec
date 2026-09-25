@@ -80,7 +80,7 @@ export default function LabStandard() {
             ))}
           </ul>
           <FadeUp delay={0.3}>
-            <a href="/process" className="btn-outline mt-10" data-hover>
+            <a href="/about/" className="btn-outline mt-10" data-hover>
               How CALTEC works
             </a>
           </FadeUp>

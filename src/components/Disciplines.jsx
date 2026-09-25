@@ -18,7 +18,7 @@ export default function Disciplines({ items }) {
                 copy="Seven focused disciplines bring laboratory capability, field expertise and clear documentation into one dependable service relationship."
               />
               <FadeUp delay={0.2}>
-                <a href="/services" className="btn-outline mt-10" data-hover>
+                <a href="#services" className="btn-outline mt-10" data-hover>
                   View all services
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                     <path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />

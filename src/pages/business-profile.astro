@@ -1,0 +1,113 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.jsx";
+import CtaBand from "../components/CtaBand.jsx";
+import { FadeUp } from "../components/Reveal.jsx";
+import { CONTACT, DISCIPLINES } from "../data/disciplines.js";
+
+const LEGACY_PDF = "https://caltec.com.pk/wp-content/uploads/2020/10/CALTEC-BUSINESS-PROFILE.pdf";
+
+const STATS = [
+  { v: "2014", l: "Established in Karachi" },
+  { v: "07", l: "Calibration disciplines" },
+  { v: "03", l: "ISO management certifications" },
+  { v: "Nationwide", l: "Laboratory & on-site coverage" },
+];
+---
+
+<Layout
+  title="Business Profile — CALTEC Calibration Technology Services"
+  description="CALTEC's business profile — calibration, instrumentation and validation services from Karachi, Pakistan."
+>
+  <PageHero
+    client:load
+    eyebrow="CALTEC / Business profile"
+    title="The company, in brief."
+    lede="Calibration Technology Services — established 2014 in Karachi. Calibration, instrumentation and validation, delivered in laboratory and on-site."
+  />
+
+  <section class="relative pb-28 md:pb-40">
+    <div class="mx-auto max-w-[1600px] px-6 md:px-12">
+      {/* stats */}
+      <div class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border hairline bg-white/[0.06] lg:grid-cols-4">
+        {STATS.map((s, i) => (
+          <FadeUp client:visible delay={i * 0.08}>
+            <div class="bg-[#070a0e] p-8 md:p-10">
+              <p class="font-display text-3xl font-bold tracking-tight text-[#ff5a1f] md:text-5xl">{s.v}</p>
+              <p class="mt-3 text-[15px] leading-snug text-[#9aa3ad]">{s.l}</p>
+            </div>
+          </FadeUp>
+        ))}
+      </div>
+
+      {/* narrative */}
+      <div class="mt-24 grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <FadeUp client:visible>
+            <p class="label-mono mb-8"><span class="tick">■</span>&nbsp;&nbsp;Who we are</p>
+            <div class="space-y-6 text-lg leading-[1.8] text-[#b6bcc4]">
+              <p>
+                Established in 2014, CALTEC (Calibration Technology Services) is a Karachi-based company
+                serving industry and institutions across Pakistan with calibration, instrumentation and
+                validation services — in laboratory and on-site.
+              </p>
+              <p>
+                The team works across seven calibration disciplines — pressure, temperature, flow,
+                mechanical, electrical, precision and thermal mapping &amp; validation — supporting
+                quality assurance, maintenance and audit readiness for clients in manufacturing,
+                pharmaceuticals, food processing, energy and beyond.
+              </p>
+              <p>
+                CALTEC operates ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 certified management
+                systems for quality, environment and occupational health &amp; safety, so every engagement
+                follows defined, documented practice.
+              </p>
+            </div>
+          </FadeUp>
+        </div>
+        <div class="lg:col-span-5">
+          <FadeUp client:visible delay={0.12}>
+            <div class="rounded-2xl border hairline bg-[#0b0e13] p-8">
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#5b636d]">Core offering</p>
+              <ul class="mt-6 space-y-4">
+                {DISCIPLINES.map((d) => (
+                  <li class="flex items-center justify-between border-b hairline pb-4 text-[15px]">
+                    <span class="text-[#ece9e2]">{d.name}</span>
+                    <span class="font-mono text-[11px] tracking-[0.18em] text-[#5b636d]">{d.cap} / 07</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-8 rounded-xl bg-[#05070a] p-6">
+                <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#5b636d]">Registered office</p>
+                <p class="mt-3 text-[14px] leading-relaxed text-[#9aa3ad]">{CONTACT.address}</p>
+                <p class="mt-2 font-mono text-[12px] tracking-[0.08em] text-[#5b636d]">PO Box {CONTACT.poBox}</p>
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </div>
+
+      {/* legacy profile note */}
+      <FadeUp client:visible>
+        <div class="mt-24 rounded-2xl border hairline bg-[#070a0e] p-8 md:p-12">
+          <div class="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+            <div>
+              <p class="font-mono text-[11px] uppercase tracking-[0.22em] text-[#5b636d]">Archive</p>
+              <h2 class="mt-3 font-display text-2xl font-bold tracking-tight md:text-3xl">Legacy 2020 business profile (PDF)</h2>
+              <p class="mt-3 max-w-xl leading-relaxed text-[#9aa3ad]">
+                The earlier flipbook edition reflects CALTEC's previous address and older material.
+                It is kept here for reference only.
+              </p>
+            </div>
+            <a href={LEGACY_PDF} target="_blank" rel="noopener" class="btn-outline shrink-0" data-hover>
+              Open archived PDF
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </FadeUp>
+    </div>
+  </section>
+
+  <CtaBand client:visible />
+</Layout>

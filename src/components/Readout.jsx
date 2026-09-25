@@ -61,7 +61,7 @@ export default function Readout() {
       </div>
       <div className="border-t hairline px-5 py-3">
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#5b636d]">
-          Traceable to SI · ISO/IEC 17025 reference standards
+          ISO 9001 · ISO 14001 · ISO 45001 certified management
         </p>
       </div>
     </div>

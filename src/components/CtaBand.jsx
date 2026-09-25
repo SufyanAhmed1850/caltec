@@ -44,7 +44,7 @@ export default function CtaBand() {
               +92 333 22 83557
             </span>
           </a>
-          <a href="/contact" className="btn-signal" data-hover>
+          <a href="/enquiry/" className="btn-signal" data-hover>
             Start a service request
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />

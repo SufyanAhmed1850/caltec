@@ -6,8 +6,8 @@ import { Rise, FadeUp, Counter } from "./Reveal.jsx";
 const STATS = [
   { value: 2014, label: "Established", plain: true },
   { value: 3, label: "ISO systems", plain: true },
-  { value: 7, label: "Core disciplines", plain: true },
-  { value: 55, suffix: "+", label: "Clients served" },
+  { value: 7, label: "Calibration disciplines", plain: true },
+  { value: 100, suffix: "+", label: "Customer logos displayed" },
 ];
 
 export default function Hero() {
@@ -50,14 +50,14 @@ export default function Hero() {
 
           <FadeUp delay={3.35}>
             <div className="mt-10 flex flex-wrap items-center gap-4">
-              <a href="/contact" className="btn-signal" data-hover>
-                Start a service request
+              <a href="/enquiry/" className="btn-signal" data-hover>
+                Request a calibration quote
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                 </svg>
               </a>
-              <a href="/services" className="btn-outline" data-hover>
-                Explore services
+              <a href="#services" className="btn-outline" data-hover>
+                Explore calibration services
               </a>
             </div>
           </FadeUp>

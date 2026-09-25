@@ -1,0 +1,78 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.jsx";
+import SectionHead from "../components/SectionHead.jsx";
+import { FadeUp } from "../components/Reveal.jsx";
+import { POSTS } from "../data/posts.js";
+
+const [featured, ...rest] = POSTS;
+---
+
+<Layout
+  title="Blog — CALTEC Calibration Technology Services"
+  description="Practical guidance for engineering, quality and operations teams responsible for dependable measurement."
+>
+  <PageHero
+    client:load
+    eyebrow="CALTEC / Blog"
+    title="Insights & guidance."
+    lede="Practical guidance for engineering, quality and operations teams responsible for dependable measurement."
+  />
+
+  <section class="relative pb-28 md:pb-40">
+    <div class="mx-auto max-w-[1600px] px-6 md:px-12">
+      {/* featured */}
+      <FadeUp client:visible>
+        <a href={`/blog/${featured.slug}/`} class="group grid overflow-hidden rounded-2xl border hairline bg-[#0b0e13] transition-colors duration-500 hover:border-[#ff5a1f]/40 md:grid-cols-2" data-hover>
+          <div class="relative flex min-h-[280px] flex-col justify-between bg-gradient-to-br from-[#ff5a1f]/15 via-[#0b0e13] to-[#0b0e13] p-8 md:p-12">
+            <div class="blueprint absolute inset-0 opacity-60" aria-hidden="true"></div>
+            <p class="relative font-mono text-[11px] uppercase tracking-[0.24em] text-[#ff5a1f]">Featured · {featured.date}</p>
+            <p class="relative font-display text-[16vw] font-bold leading-none text-white/[0.05] md:text-[7vw]">01</p>
+          </div>
+          <div class="p-8 md:p-12">
+            <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5b636d]">{featured.category}</p>
+            <h2 class="mt-4 font-display text-3xl font-bold leading-tight tracking-tight transition-colors group-hover:text-[#ff5a1f] md:text-4xl">{featured.title}</h2>
+            <p class="mt-4 leading-relaxed text-[#9aa3ad]">{featured.excerpt}</p>
+            <span class="mt-8 inline-flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.18em] text-[#ece9e2]">
+              Read the insight <span class="text-[#ff5a1f] transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </span>
+          </div>
+        </a>
+      </FadeUp>
+
+      {/* rest */}
+      <div class="mt-6 grid gap-6 md:grid-cols-2">
+        {rest.map((p, i) => (
+          <FadeUp client:visible delay={(i % 2) * 0.1}>
+            <a href={`/blog/${p.slug}/`} class="group flex h-full flex-col justify-between rounded-2xl border hairline bg-[#0b0e13] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#ff5a1f]/40 md:p-10" data-hover>
+              <div>
+                <div class="flex items-center justify-between">
+                  <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-[#5b636d]">{p.category}</p>
+                  <p class="font-mono text-[11px] tracking-[0.14em] text-[#5b636d]">{p.date}</p>
+                </div>
+                <h2 class="mt-5 font-display text-2xl font-bold leading-tight tracking-tight transition-colors group-hover:text-[#ff5a1f] md:text-3xl">{p.title}</h2>
+                <p class="mt-4 leading-relaxed text-[#9aa3ad]">{p.excerpt}</p>
+              </div>
+              <span class="mt-8 inline-flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.18em] text-[#ece9e2]">
+                Read article <span class="text-[#ff5a1f] transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </span>
+            </a>
+          </FadeUp>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <FadeUp client:visible>
+        <div class="mt-20 rounded-2xl border hairline bg-[#070a0e] p-8 md:p-12">
+          <SectionHead
+            client:visible
+            kicker="A dependable next step"
+            title="Have a measurement question?"
+            copy="Share the instrument, range, location and timing. CALTEC will help clarify the right service scope."
+          />
+          <a href="/enquiry/" class="btn-signal mt-8" data-hover>Start an enquiry</a>
+        </div>
+      </FadeUp>
+    </div>
+  </section>
+</Layout>

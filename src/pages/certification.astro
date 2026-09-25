@@ -1,0 +1,126 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.jsx";
+import CtaBand from "../components/CtaBand.jsx";
+import { FadeUp } from "../components/Reveal.jsx";
+
+const BASE = "https://caltec.com.pk/wp-content/plugins/caltec-certifications/assets/certificates";
+
+const CERTS = [
+  {
+    code: "ISO 9001:2015",
+    title: "Quality management systems",
+    pdf: `${BASE}/ISO-9001-2026-Certificate.pdf`,
+    preview: `${BASE}/iso-9001-2026.png`,
+    num: "01",
+  },
+  {
+    code: "ISO 14001:2015",
+    title: "Environmental management systems",
+    pdf: `${BASE}/ISO-14001-2026-Certificate.pdf`,
+    preview: `${BASE}/iso-14001-2026.png`,
+    num: "02",
+  },
+  {
+    code: "ISO 45001:2018",
+    title: "Occupational health & safety management systems",
+    pdf: `${BASE}/ISO-45001-2026-Certificate.pdf`,
+    preview: `${BASE}/iso-45001-2026.png`,
+    num: "03",
+  },
+];
+
+const PRINCIPLES = [
+  { t: "Quality", d: "Documented calibration, service and validation processes keep deliverables consistent and audit-ready." },
+  { t: "Environment", d: "Field and laboratory operations are managed to minimise environmental impact." },
+  { t: "Safety", d: "On-site teams work to defined occupational health and safety practices." },
+];
+---
+
+<Layout
+  title="Certification — CALTEC Calibration Technology Services"
+  description="CALTEC's ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 certifications for calibration services."
+>
+  <PageHero
+    client:load
+    eyebrow="CALTEC / Certification"
+    title="Certified management."
+    lede="CALTEC maintains ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 management systems — quality, environment and occupational health & safety."
+  />
+
+  <section class="relative pb-28 md:pb-40">
+    <div class="mx-auto max-w-[1600px] px-6 md:px-12">
+      {/* certificate cards */}
+      <div class="grid gap-6 lg:grid-cols-3">
+        {CERTS.map((c, i) => (
+          <FadeUp client:visible delay={i * 0.1}>
+            <div class="group h-full overflow-hidden rounded-2xl border hairline bg-[#0b0e13] transition-colors duration-500 hover:border-[#ff5a1f]/40">
+              <a href={c.pdf} target="_blank" rel="noopener" class="block" data-hover>
+                <div class="relative aspect-[3/4] overflow-hidden bg-[#05070a]">
+                  <img
+                    src={c.preview}
+                    alt={`${c.code} certificate`}
+                    loading="lazy"
+                    class="h-full w-full object-contain p-8 transition-transform duration-700 group-hover:scale-[1.03]"
+                  />
+                  <span class="absolute right-5 top-5 rounded-full bg-[#ff5a1f] px-4 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#0a0500] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    Open PDF
+                  </span>
+                </div>
+              </a>
+              <div class="border-t hairline p-8">
+                <p class="font-mono text-[11px] tracking-[0.2em] text-[#5b636d]">{c.num} / 03</p>
+                <h2 class="mt-3 font-display text-3xl font-bold tracking-tight">{c.code}</h2>
+                <p class="mt-2 text-[15px] text-[#9aa3ad]">{c.title}</p>
+                <a href={c.pdf} target="_blank" rel="noopener" class="mt-6 inline-flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.18em] text-[#ece9e2]" data-hover>
+                  Download certificate <span class="text-[#ff5a1f]">↗</span>
+                </a>
+              </div>
+            </div>
+          </FadeUp>
+        ))}
+      </div>
+
+      {/* detail strip */}
+      <FadeUp client:visible>
+        <div class="mt-6 overflow-x-auto rounded-2xl border hairline bg-[#070a0e]">
+          <table class="w-full min-w-[720px] text-left text-[15px]">
+            <thead>
+              <tr class="border-b hairline font-mono text-[11px] uppercase tracking-[0.2em] text-[#5b636d]">
+                <th class="px-8 py-5 font-medium">Standard</th>
+                <th class="px-8 py-5 font-medium">Issued by</th>
+                <th class="px-8 py-5 font-medium">Current issue date</th>
+                <th class="px-8 py-5 font-medium">Certified scope</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CERTS.map((c) => (
+                <tr class="border-b hairline last:border-0">
+                  <td class="px-8 py-5 font-semibold text-[#ece9e2]">{c.code}</td>
+                  <td class="px-8 py-5 text-[#9aa3ad]">Globus Certifications Pvt. Ltd.</td>
+                  <td class="px-8 py-5 text-[#9aa3ad]">31 July 2026</td>
+                  <td class="px-8 py-5 text-[#9aa3ad]">Calibration services</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </FadeUp>
+
+      {/* principles */}
+      <div class="mt-24 grid gap-5 md:grid-cols-3">
+        {PRINCIPLES.map((p, i) => (
+          <FadeUp client:visible delay={i * 0.1}>
+            <div class="h-full rounded-2xl border hairline bg-[#0b0e13] p-8">
+              <p class="font-mono text-[12px] tnum text-[#ff5a1f]">{String(i + 1).padStart(2, "0")}</p>
+              <h3 class="mt-3 font-display text-2xl font-bold tracking-tight">{p.t}</h3>
+              <p class="mt-3 leading-relaxed text-[#9aa3ad]">{p.d}</p>
+            </div>
+          </FadeUp>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand client:visible />
+</Layout>
