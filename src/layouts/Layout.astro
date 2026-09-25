@@ -2,7 +2,6 @@
 import "../styles/global.css";
 import SmoothScroll from "../components/SmoothScroll.jsx";
 import Cursor from "../components/Cursor.jsx";
-import Preloader from "../components/Preloader.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.astro";
 
@@ -30,16 +29,159 @@ const canonical = Astro.url;
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
+    <script is:inline>
+      try {
+        document.documentElement.classList.add("js");
+        if (sessionStorage.getItem("caltec_v")) document.documentElement.classList.add("returning");
+      } catch (e) {}
+    </script>
+    <noscript><style>#loader, #wipe { display: none !important; }</style></noscript>
   </head>
   <body>
+    {/* ── loading screen ── */}
+    <div id="loader" aria-hidden="true">
+      <p class="loader-brand"><span>©2026</span>&nbsp;&nbsp;Caltec</p>
+      <p class="loader-tag">Calibration Technology Services</p>
+      <div class="loader-count"><span id="load-num">0</span><span class="loader-pct">%</span></div>
+      <div class="loader-bar"><span id="load-bar"></span></div>
+    </div>
+
+    {/* ── page transition wipe ── */}
+    <div id="wipe" aria-hidden="true"><span class="wipe-edge"></span></div>
+
     <SmoothScroll client:load />
     <Cursor client:load />
-    <Preloader client:load />
     <div class="grain" aria-hidden="true"></div>
     <Navbar client:load />
     <main>
       <slot />
     </main>
     <Footer />
+
+    <script is:inline>
+      (function () {
+        var EASE = "cubic-bezier(0.76, 0, 0.24, 1)";
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var loader = document.getElementById("loader");
+        var wipe = document.getElementById("wipe");
+        var num = document.getElementById("load-num");
+        var bar = document.getElementById("load-bar");
+        var returning = document.documentElement.classList.contains("returning");
+
+        function lockScroll(on) {
+          document.body.style.overflow = on ? "hidden" : "";
+          try {
+            if (window.__lenis) on ? window.__lenis.stop() : window.__lenis.start();
+          } catch (e) {}
+        }
+
+        function finish() {
+          try { sessionStorage.setItem("caltec_v", "1"); } catch (e) {}
+          lockScroll(false);
+          if (loader) loader.style.display = "none";
+          if (wipe) {
+            wipe.style.transform = "translateY(101%)";
+            wipe.style.borderTopLeftRadius = "0";
+            wipe.style.borderTopRightRadius = "0";
+            wipe.style.borderBottomLeftRadius = "0";
+            wipe.style.borderBottomRightRadius = "0";
+          }
+        }
+
+        /* wipe away (reveal page) — curved trailing edge */
+        function wipeAway(done) {
+          if (!wipe || reduced) { finish(); done && done(); return; }
+          wipe.style.borderBottomLeftRadius = "0";
+          wipe.style.borderBottomRightRadius = "0";
+          var anim = wipe.animate(
+            [
+              { transform: "translateY(0)", borderBottomLeftRadius: "0% 0%", borderBottomRightRadius: "0% 0%" },
+              { transform: "translateY(-101%)", borderBottomLeftRadius: "50% 9%", borderBottomRightRadius: "50% 9%" }
+            ],
+            { duration: 900, easing: EASE, fill: "forwards" }
+          );
+          anim.onfinish = function () { finish(); done && done(); };
+        }
+
+        /* first visit: counter loader, then lift away */
+        function runLoader() {
+          if (!loader || reduced) { finish(); return; }
+          lockScroll(true);
+          var t0 = null, DUR = 2000;
+          function frame(t) {
+            if (!t0) t0 = t;
+            var p = Math.min((t - t0) / DUR, 1);
+            var e = 1 - Math.pow(1 - p, 4);
+            var v = Math.floor(e * 100);
+            if (num) num.textContent = v;
+            if (bar) bar.style.transform = "scaleX(" + e + ")";
+            if (p < 1) requestAnimationFrame(frame);
+            else setTimeout(function () {
+              var anim = loader.animate(
+                [
+                  { transform: "translateY(0)", borderBottomLeftRadius: "0% 0%", borderBottomRightRadius: "0% 0%" },
+                  { transform: "translateY(-101%)", borderBottomLeftRadius: "50% 9%", borderBottomRightRadius: "50% 9%" }
+                ],
+                { duration: 900, easing: EASE, fill: "forwards" }
+              );
+              anim.onfinish = finish;
+            }, 250);
+          }
+          requestAnimationFrame(frame);
+        }
+
+        /* page-change wipe: sweep up to cover, then navigate */
+        function wipeTo(url) {
+          if (!wipe || reduced) { window.location.href = url; return; }
+          lockScroll(true);
+          var anim = wipe.animate(
+            [
+              { transform: "translateY(101%)", borderTopLeftRadius: "50% 9%", borderTopRightRadius: "50% 9%" },
+              { transform: "translateY(0)", borderTopLeftRadius: "0% 0%", borderTopRightRadius: "0% 0%" }
+            ],
+            { duration: 750, easing: EASE, fill: "forwards" }
+          );
+          anim.onfinish = function () { window.location.href = url; };
+          setTimeout(function () {
+            if (window.location.href !== url) window.location.href = url;
+          }, 2500);
+        }
+
+        document.addEventListener("click", function (e) {
+          if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+          var a = e.target.closest ? e.target.closest("a[href]") : null;
+          if (!a) return;
+          var href = a.getAttribute("href");
+          if (!href || href.charAt(0) !== "/" || href.charAt(1) === "/") return;
+          if (a.target === "_blank" || a.hasAttribute("download")) return;
+          if (href.indexOf("#") !== -1) return;
+          try {
+            var url = new URL(href, window.location.origin);
+            if (url.origin !== window.location.origin) return;
+            if (url.pathname === window.location.pathname && !url.search) return;
+          } catch (err) { return; }
+          e.preventDefault();
+          wipeTo(href);
+        });
+
+        /* bfcache restore */
+        window.addEventListener("pageshow", function (e) {
+          if (e.persisted) finish();
+        });
+
+        /* safety: never trap the user */
+        setTimeout(finish, 6000);
+
+        if (returning) {
+          lockScroll(true);
+          if (document.readyState === "complete") wipeAway();
+          else window.addEventListener("load", wipeAway);
+          setTimeout(function () { if (wipe && wipe.style.display !== "none") wipeAway(); }, 2500);
+        } else {
+          if (document.readyState === "complete") runLoader();
+          else window.addEventListener("load", runLoader);
+        }
+      })();
+    </script>
   </body>
 </html>
