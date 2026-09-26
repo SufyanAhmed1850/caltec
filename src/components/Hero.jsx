@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import Gauge from "./Gauge.jsx";
 import Readout from "./Readout.jsx";
 import { Rise, FadeUp, Counter } from "./Reveal.jsx";
+import { loadDelay } from "../lib/loadDelay.js";
 
 const STATS = [
   { value: 2014, label: "Established", plain: true },
@@ -27,28 +28,28 @@ export default function Hero() {
 
       <div className="relative mx-auto grid w-full max-w-[1600px] flex-1 items-center gap-12 px-6 md:px-12 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <FadeUp delay={2.5}>
+          <FadeUp delay={loadDelay(2.5)}>
             <p className="label-mono mb-6">
               <span className="tick">■</span>&nbsp;&nbsp;Calibration Technology Services — Est. 2014
             </p>
           </FadeUp>
 
           <h1 className="font-display text-[13.5vw] font-bold leading-[0.92] tracking-[-0.02em] sm:text-[11vw] lg:text-[6.2vw]">
-            <Rise text="Precision that" delay={2.6} /><br />
-            <Rise text="keeps industry" delay={2.75} /><br />
+            <Rise text="Precision that" delay={loadDelay(2.6)} /><br />
+            <Rise text="keeps industry" delay={loadDelay(2.75)} /><br />
             <span className="text-[#ff5a1f]">
-              <Rise text="moving." delay={2.9} />
+              <Rise text="moving." delay={loadDelay(2.9)} />
             </span>
           </h1>
 
-          <FadeUp delay={3.2}>
+          <FadeUp delay={loadDelay(3.2)}>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-[#9aa3ad]">
               Traceable calibration, instrumentation support and validation for
               organisations where accuracy, uptime and audit readiness matter.
             </p>
           </FadeUp>
 
-          <FadeUp delay={3.35}>
+          <FadeUp delay={loadDelay(3.35)}>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <a href="/enquiry/" className="btn-signal" data-hover>
                 Request a calibration quote
@@ -64,7 +65,7 @@ export default function Hero() {
         </div>
 
         <div className="lg:col-span-5">
-          <FadeUp delay={3.0} className="flex flex-col gap-6">
+          <FadeUp delay={loadDelay(3.0)} className="flex flex-col gap-6">
             <div className="rounded-2xl border hairline bg-[#0b0e13]/60 p-6 backdrop-blur">
               <div className="mb-2 flex items-center justify-between">
                 <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#5b636d]">
@@ -85,7 +86,7 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 3.6, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ delay: loadDelay(3.6), duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className="relative border-t hairline bg-[#05070a]/70 backdrop-blur"
       >
         <div className="mx-auto grid max-w-[1600px] grid-cols-2 divide-x divide-white/[0.07] px-0 md:grid-cols-4">

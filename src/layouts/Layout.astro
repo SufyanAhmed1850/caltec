@@ -31,6 +31,7 @@ const pageNames: Record<string, string> = {
 };
 for (const d of DISCIPLINES) pageNames[`/${d.slug}/`] = d.name;
 const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
+const namespace = Astro.url.pathname.replace(/^\/|\/$/g, "").replace(/\//g, "-") || "home";
 ---
 
 <!doctype html>
@@ -56,8 +57,8 @@ const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
     </script>
     <noscript><style>#loader, #wipe { display: none !important; }</style></noscript>
   </head>
-  <body>
-    {/* ── loading screen: dot + cycling greetings ── */}
+  <body data-barba="wrapper">
+    {/* ── loading screen: dot + cycling greetings (first visit) ── */}
     <div id="loader" aria-hidden="true">
       <div class="loader-center">
         <span class="l-dot"></span>
@@ -65,7 +66,7 @@ const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
       </div>
     </div>
 
-    {/* ── page transition wipe: dot + destination name ── */}
+    {/* ── page transition wipe: dot + destination name (persistent) ── */}
     <div id="wipe" aria-hidden="true">
       <div class="wipe-center">
         <span class="l-dot"></span>
@@ -73,18 +74,26 @@ const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
       </div>
     </div>
 
+    <script type="application/json" id="barba-names">{JSON.stringify(pageNames)}</script>
+
     <SmoothScroll client:load />
     <Cursor client:load />
     <div class="grain" aria-hidden="true"></div>
     <Navbar client:load />
-    <main>
+    <main
+      data-barba="container"
+      data-barba-namespace={namespace}
+      data-page-name={currentPage}
+      data-title={title}
+      data-description={description}
+    >
       <slot />
     </main>
     <Footer />
 
-    <script is:inline define:vars={{ pageNames, currentPage }}>
+    {/* first-visit loader + hard-load wipe reveal */}
+    <script is:inline define:vars={{ currentPage }}>
       (function () {
-        var EASE_IN = "cubic-bezier(0.77, 0, 0.175, 1)";   /* Power4.easeIn */
         var EASE_IO = "cubic-bezier(0.76, 0, 0.24, 1)";
         var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         var loader = document.getElementById("loader");
@@ -93,6 +102,7 @@ const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
         var wipeWord = document.getElementById("wipe-word");
         var returning = document.documentElement.classList.contains("returning");
         var GREETINGS = ["Hello", "Bonjour", "\u0938\u094d\u0935\u093e\u0917\u0924 \u0939\u0947", "Ciao", "Ol\u00e1", "\u304a\u3044", "Hall\u00e5", "Guten tag", "Hallo"];
+        window.__firstLoad = true;
 
         function lockScroll(on) {
           document.body.style.overflow = on ? "hidden" : "";
@@ -101,21 +111,19 @@ const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
           } catch (e) {}
         }
 
-        function resetWipe() {
-          if (!wipe) return;
-          wipe.style.transform = "translateY(101%)";
-          wipe.style.borderTopLeftRadius = "0";
-          wipe.style.borderTopRightRadius = "0";
-          wipe.style.borderBottomLeftRadius = "0";
-          wipe.style.borderBottomRightRadius = "0";
-          if (wipeWord) { wipeWord.style.opacity = "1"; wipeWord.style.transform = "none"; }
-        }
-
         function finish() {
           try { sessionStorage.setItem("caltec_v", "1"); } catch (e) {}
           lockScroll(false);
           if (loader) loader.style.display = "none";
-          resetWipe();
+          if (wipe) {
+            wipe.style.transform = "translateY(101%)";
+            wipe.style.borderTopLeftRadius = "0";
+            wipe.style.borderTopRightRadius = "0";
+            wipe.style.borderBottomLeftRadius = "0";
+            wipe.style.borderBottomRightRadius = "0";
+          }
+          if (wipeWord) { wipeWord.style.opacity = "1"; wipeWord.textContent = currentPage; }
+          window.__firstLoad = false;
         }
 
         function setWord(el, text) {
@@ -138,14 +146,12 @@ const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
           };
         }
 
-        /* wipe away (reveal page) — trailing curve flattens as it exits */
+        /* hard load within a session: wipe starts covering, lift it away */
         function wipeAway() {
           if (!wipe || reduced) { finish(); return; }
           if (wipeWord) {
-            wipeWord.animate(
-              [{ opacity: 1 }, { opacity: 0 }],
-              { duration: 400, easing: "ease-in", fill: "forwards" }
-            );
+            wipeWord.textContent = currentPage;
+            wipeWord.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, easing: "ease-in", fill: "forwards" });
           }
           wipe.animate(
             [
@@ -169,12 +175,7 @@ const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
             } else {
               clearInterval(iv);
               setTimeout(function () {
-                if (loadWord) {
-                  loadWord.animate(
-                    [{ opacity: 1 }, { opacity: 0 }],
-                    { duration: 400, easing: "ease-in", fill: "forwards" }
-                  );
-                }
+                if (loadWord) loadWord.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, easing: "ease-in", fill: "forwards" });
                 setTimeout(function () {
                   loader.animate(
                     [
@@ -188,46 +189,6 @@ const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
             }
           }, 300);
         }
-
-        /* page change: name the destination, sweep up to cover, navigate */
-        function wipeTo(url, name) {
-          if (wipeWord) wipeWord.textContent = name;
-          if (!wipe || reduced) { window.location.href = url; return; }
-          lockScroll(true);
-          wipe.animate(
-            [
-              { transform: "translateY(101%)", borderTopLeftRadius: "50% 0vh", borderTopRightRadius: "50% 0vh" },
-              { transform: "translateY(0)", borderTopLeftRadius: "50% 10vh", borderTopRightRadius: "50% 10vh" }
-            ],
-            { duration: 500, easing: EASE_IN, fill: "forwards" }
-          ).onfinish = function () { window.location.href = url; };
-          setTimeout(function () { window.location.href = url; }, 2500);
-        }
-
-        function nameFor(path) {
-          if (pageNames[path]) return pageNames[path];
-          var slug = path.replace(/^\/|\/$/g, "").split("/").pop() || "";
-          return slug.split("-").map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(" ") || "Caltec";
-        }
-
-        document.addEventListener("click", function (e) {
-          if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-          var a = e.target.closest ? e.target.closest("a[href]") : null;
-          if (!a) return;
-          var href = a.getAttribute("href");
-          if (!href || href.charAt(0) !== "/" || href.charAt(1) === "/") return;
-          if (a.target === "_blank" || a.hasAttribute("download")) return;
-          if (href.indexOf("#") !== -1) return;
-          var path;
-          try {
-            var url = new URL(href, window.location.origin);
-            if (url.origin !== window.location.origin) return;
-            if (url.pathname === window.location.pathname && !url.search) return;
-            path = url.pathname;
-          } catch (err) { return; }
-          e.preventDefault();
-          wipeTo(href, nameFor(path));
-        });
 
         window.addEventListener("pageshow", function (e) {
           if (e.persisted) finish();
@@ -245,6 +206,140 @@ const currentPage = pageNames[Astro.url.pathname] ?? "Caltec";
           else window.addEventListener("load", runLoader);
         }
       })();
+    </script>
+
+    {/* Barba.js page transitions — no full reloads, wipe covers + reveals */}
+    <script>
+      import barba from "@barba/core";
+      import barbaPrefetch from "@barba/prefetch";
+      import { gsap } from "gsap";
+      import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+      gsap.registerPlugin(ScrollTrigger);
+      barba.use(barbaPrefetch);
+
+      const EASE_IN = "cubic-bezier(0.77, 0, 0.175, 1)"; /* Power4.easeIn */
+      const EASE_IO = "cubic-bezier(0.76, 0, 0.24, 1)";
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const wipe = document.getElementById("wipe");
+      const wipeWord = document.getElementById("wipe-word");
+      let pageNames = {};
+      try {
+        pageNames = JSON.parse(document.getElementById("barba-names").textContent || "{}");
+      } catch (e) {}
+
+      function nameFor(path) {
+        if (pageNames[path]) return pageNames[path];
+        const slug = (path.replace(/^\/|\/$/g, "").split("/").pop() || "");
+        return slug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ") || "Caltec";
+      }
+
+      function pathOf(href) {
+        try {
+          return new URL(href, window.location.origin).pathname;
+        } catch (e) {
+          return "/";
+        }
+      }
+
+      /* kill scroll-driven animation state from the outgoing page */
+      function killPageAnimations() {
+        try {
+          ScrollTrigger.getAll().forEach((t) => {
+            if (t.animation) t.animation.kill();
+            t.kill();
+          });
+        } catch (e) {}
+      }
+
+      function resetWipe() {
+        if (!wipe) return;
+        wipe.style.transform = "translateY(101%)";
+        wipe.style.borderTopLeftRadius = "0";
+        wipe.style.borderTopRightRadius = "0";
+        wipe.style.borderBottomLeftRadius = "0";
+        wipe.style.borderBottomRightRadius = "0";
+        if (wipeWord) wipeWord.style.opacity = "1";
+      }
+
+      function finished(anim) {
+        return anim.finished.catch(() => {});
+      }
+
+      barba.init({
+        timeout: 8000,
+        prevent: ({ el }) => {
+          const href = el.getAttribute("href") || "";
+          return href.startsWith("#") || el.hasAttribute("data-barba-prevent");
+        },
+        transitions: [
+          {
+            name: "wipe",
+            async leave(data) {
+              if (reduced || !wipe) return;
+              window.__barbaNav = true;
+              if (wipeWord) wipeWord.textContent = nameFor(pathOf(data.next.url.href));
+              try {
+                if (window.__lenis) window.__lenis.stop();
+              } catch (e) {}
+              document.body.style.overflow = "hidden";
+              killPageAnimations();
+              await finished(
+                wipe.animate(
+                  [
+                    { transform: "translateY(101%)", borderTopLeftRadius: "50% 0vh", borderTopRightRadius: "50% 0vh" },
+                    { transform: "translateY(0)", borderTopLeftRadius: "50% 10vh", borderTopRightRadius: "50% 10vh" }
+                  ],
+                  { duration: 500, easing: EASE_IN, fill: "forwards" }
+                )
+              );
+            },
+            async enter(data) {
+              const c = data.next.container;
+              if (c.dataset.title) document.title = c.dataset.title;
+              const md = document.querySelector('meta[name="description"]');
+              if (md && c.dataset.description) md.setAttribute("content", c.dataset.description);
+              const cn = document.querySelector('link[rel="canonical"]');
+              if (cn) cn.setAttribute("href", data.next.url.href);
+              try {
+                if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true });
+              } catch (e) {}
+              window.scrollTo(0, 0);
+              if (!wipe || reduced) {
+                document.body.style.overflow = "";
+                try {
+                  if (window.__lenis) window.__lenis.start();
+                } catch (e) {}
+                return;
+              }
+              if (wipeWord) {
+                await finished(
+                  wipeWord.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 250, easing: "ease-in", fill: "forwards" })
+                );
+              }
+              await finished(
+                wipe.animate(
+                  [
+                    { transform: "translateY(0)", borderBottomLeftRadius: "50% 10vh", borderBottomRightRadius: "50% 10vh" },
+                    { transform: "translateY(-101%)", borderBottomLeftRadius: "50% 0vh", borderBottomRightRadius: "50% 0vh" }
+                  ],
+                  { duration: 800, easing: EASE_IO, fill: "forwards" }
+                )
+              );
+              resetWipe();
+              document.body.style.overflow = "";
+              try {
+                if (window.__lenis) window.__lenis.start();
+              } catch (e) {}
+            },
+            afterEnter() {
+              try {
+                ScrollTrigger.refresh();
+              } catch (e) {}
+            },
+          },
+        ],
+      });
     </script>
   </body>
 </html>
